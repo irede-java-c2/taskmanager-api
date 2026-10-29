@@ -55,4 +55,5 @@ Projeto desenvolvido durante o curso de Java da **iRede**.
 ## 👨‍💻 Autores
 
 **David Silva** — [github.com/davsilvam](https://github.com/davsilvam)
+
 **Alex Girão** — [github.com/alex-girao](https://github.com/alex-girao)
