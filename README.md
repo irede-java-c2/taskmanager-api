@@ -52,6 +52,7 @@ A aplicação ficará disponível em: `http://localhost:8080`
 
 Projeto desenvolvido durante o curso de Java da **iRede**.
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
+**David Silva** — [github.com/davsilvam](https://github.com/davsilvam)
 **Alex Girão** — [github.com/alex-girao](https://github.com/alex-girao)
