@@ -43,10 +43,40 @@ No Windows, use `mvnw.cmd spring-boot:run`.
 
 A aplicação ficará disponível em: `http://localhost:8080`
 
-## 🗺️ Roadmap
+## 📍 Estado do projeto
 
-- [ ] Criação do projeto Spring Boot
-- [ ] Novas funcionalidades serão adicionadas a cada aula
+> Atualizado por quem fecha cada fase. Quem assume a próxima aula lê esta seção na véspera.
+
+| Item | Situação |
+|------|----------|
+| Última aula concluída | — (o módulo começa em 27/10/2026) |
+| Última tag | — |
+| Fase atual | Fase 1 · Persistência (Alex) |
+| Próximo marco | Marco 1 · 12/11/2026 — entidades, relações e consultas JPA prontas |
+
+**Pendências para a próxima aula:** nenhuma.
+
+## 🗂️ Fases e versões
+
+| Fase | Aulas | Professor | Marco | Release |
+|------|-------|-----------|-------|---------|
+| 1 · Persistência | 01 a 06 | Alex | 12/11/2026 | `v0.1.0` |
+| 2 · API REST | 07 a 12 | David | 03/12/2026 | `v0.2.0` |
+| 3 · Segurança e docs | 13 a 15 | Alex | 15/12/2026 | `v0.3.0` |
+| 4 · Entrega | 16 a 18 | Alex e David | 07/01/2027 | `v1.0.0` |
+
+O acompanhamento das tarefas fica no [quadro do projeto](https://github.com/orgs/irede-java-c2/projects/1).
+
+## 🏷️ Como acompanhar as aulas
+
+Cada aula termina com uma tag `aula-NN` na `main`. Se você faltou ou se perdeu, volte ao estado exato do fim daquela aula:
+
+```bash
+git fetch --tags
+git checkout aula-06
+```
+
+Para voltar ao código mais recente: `git checkout main`.
 
 ## 🏫 Instituição
 
