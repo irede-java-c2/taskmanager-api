@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
@@ -31,6 +33,11 @@ public class Tarefa {
     
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade = Prioridade.MEDIA;
+    
+    //receber a chave estrangeira de usuario
+    @ManyToOne
+    @JoinColumn(name="usuario_id", nullable = false)
+    private Usuario usuario;
     
     public Tarefa(){
     }
@@ -87,6 +94,14 @@ public class Tarefa {
 
     public void setPrioridade(Prioridade prioridade) {
         this.prioridade = prioridade;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
