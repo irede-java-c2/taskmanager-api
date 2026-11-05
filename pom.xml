@@ -8,14 +8,14 @@
             <version>3.5.7</version>
             <relativePath/>
         </parent>
-	<groupId>irede.org.br</groupId>
+	<groupId>br.org.irede</groupId>
 	<artifactId>taskmanager-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>taskmanager-api</name>
 	<description>API REST para gerenciamento de tarefas</description>
 	<properties>
 		<java.version>25</java.version>
-		<start-class>irede.org.br.taskmanagerapi.TaskmanagerApiApplication</start-class>
+		<start-class>br.org.irede.taskmanagerapi.TaskmanagerApiApplication</start-class>
 	</properties>
 	<dependencies>
                 <dependency>
@@ -29,9 +29,9 @@
                 </dependency>
             
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
