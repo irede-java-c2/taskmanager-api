@@ -55,6 +55,20 @@ public class TaskmanagerApiApplication implements CommandLineRunner {
         tarefaRepository.save(t1);
         tarefaRepository.save(t2);
         
+        Usuario leo = new Usuario("Leo", "leo@email.com", "123");
+        Tarefa t3 = new Tarefa("Configurar Lombok", "Adicionar lib ao projeto", Prioridade.MEDIA);
+        t3.adicionarEtiqueta(trabalho);
+        leo.adicionarTarefa(t3);
+        
+        Tarefa t4 = new Tarefa("Spike para Rag", "Estudar a viabilidade para o projeto", Prioridade.ALTA);
+        t4.adicionarEtiqueta(estudo);
+        t4.adicionarEtiqueta(urgente);
+        leo.adicionarTarefa(t4);
+        //salvando tarefa e usuario juntos, sem a necessidade do repository de tarefa
+        usuarioRepository.save(leo);
+        
+        usuarioRepository.delete(leo);
+        
         System.out.println("====== Buscando todos os registros");
         for(Tarefa t : tarefaRepository.findAll()){
             System.out.println(t);
