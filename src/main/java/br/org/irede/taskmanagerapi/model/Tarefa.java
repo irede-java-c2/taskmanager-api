@@ -8,12 +8,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_tarefa")
+@Table(name = "tarefas")
 public class Tarefa {
     
     @Id
@@ -39,6 +43,12 @@ public class Tarefa {
     @JoinColumn(name="usuario_id", nullable = false)
     private Usuario usuario;
     
+    @ManyToMany
+    @JoinTable(name = "tarefa_etiqueta",
+        joinColumns = @JoinColumn(name = "id_tarefa"),
+        inverseJoinColumns = @JoinColumn(name = "id_etiqueta"))
+    private Set<Etiqueta> etiquetas = new HashSet();
+    
     public Tarefa(){
     }
 
@@ -46,6 +56,16 @@ public class Tarefa {
         this.titulo = titulo;
         this.descricao = descricao;
         this.prioridade = prioridade;
+    }
+    
+    public void adicionarEtiqueta(Etiqueta etiqueta){
+        etiquetas.add(etiqueta);
+        etiqueta.getTarefas().add(this);
+    }
+    
+    public void removerEtiqueta(Etiqueta etiqueta){
+        etiquetas.remove(etiqueta);
+        etiqueta.getTarefas().remove(this);
     }
 
     public Long getId() {
@@ -104,12 +124,19 @@ public class Tarefa {
         this.usuario = usuario;
     }
 
+    public Set<Etiqueta> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(Set<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
     @Override
     public String toString() {
         return "Tarefa{" + "id=" + id + ", titulo=" + titulo 
                 + ", descricao=" + descricao + ", concluida=" + concluida 
                 + ", prazo=" + prazo + ", prioridade=" + prioridade + '}';
     }
-    
     
 }
