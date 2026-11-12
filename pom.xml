@@ -10,7 +10,7 @@
         </parent>
 	<groupId>br.org.irede</groupId>
 	<artifactId>taskmanager-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>taskmanager-api</name>
 	<description>API REST para gerenciamento de tarefas</description>
 	<properties>
