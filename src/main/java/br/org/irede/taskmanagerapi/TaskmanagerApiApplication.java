@@ -1,5 +1,6 @@
 package br.org.irede.taskmanagerapi;
 
+import br.org.irede.taskmanagerapi.filtro.TarefaFiltro;
 import br.org.irede.taskmanagerapi.model.Prioridade;
 import br.org.irede.taskmanagerapi.repository.TarefaRepository;
 import br.org.irede.taskmanagerapi.model.Tarefa;
@@ -8,9 +9,14 @@ import br.org.irede.taskmanagerapi.model.Etiqueta;
 import br.org.irede.taskmanagerapi.repository.EtiquetaRepository;
 import br.org.irede.taskmanagerapi.repository.UsuarioRepository;
 import java.time.LocalDate;
+import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @SpringBootApplication
 public class TaskmanagerApiApplication implements CommandLineRunner {
@@ -66,6 +72,30 @@ public class TaskmanagerApiApplication implements CommandLineRunner {
             Prioridade prioridade = (Prioridade) linha[0];
             Long total = (Long) linha[1];
             System.out.println(prioridade + ": "+total);
+        }
+        
+        //buscar sem filtro
+        TarefaFiltro semFiltro = new TarefaFiltro();
+        Page<Tarefa> resultadoSemFiltro = tarefaRepository.buscarComFiltros(semFiltro, PageRequest.of(1, 4));
+        imprimirPagina(resultadoSemFiltro);
+        //buscar por usuario
+        TarefaFiltro filtro = new TarefaFiltro();
+        filtro.setUsuarioId(1L);
+        Page<Tarefa> resultadoUsuario = tarefaRepository.buscarComFiltros(filtro, PageRequest.of(0, 4));
+        imprimirPagina(resultadoUsuario);
+       
+    }
+    
+    private void imprimirPagina(Page<Tarefa> pagina) {
+        System.out.println("Página " + (pagina.getNumber() + 1) + " de " + pagina.getTotalPages()
+                + " | " + pagina.getTotalElements() + " tarefa(s) no total");
+        imprimir(pagina.getContent());
+    }
+    
+    private void imprimir(List<Tarefa> tarefas) {
+        for (Tarefa t : tarefas) {
+            System.out.println("#" + t.getId() + " " + t.getTitulo() + " | " + t.getPrioridade()
+                    + " | prazo: " + t.getPrazo() + " | concluída: " + t.isConcluida());
         }
     }
     

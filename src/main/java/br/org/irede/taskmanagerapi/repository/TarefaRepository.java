@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
+public interface TarefaRepository extends JpaRepository<Tarefa, Long>, TarefaRepositoryCustom {
     
     @Query("SELECT t FROM Tarefa t WHERE t.usuario.id = :usuarioId ORDER BY t.id")
     List<Tarefa> findByUsuarioId(@Param("usuarioId") Long usuarioId);
