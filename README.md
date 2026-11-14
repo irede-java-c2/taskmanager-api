@@ -49,12 +49,16 @@ A aplicação ficará disponível em: `http://localhost:8080`
 
 | Item | Situação |
 |------|----------|
-| Última aula concluída | — (o módulo começa em 27/10/2026) |
-| Última tag | — |
-| Fase atual | Fase 1 · Persistência (Alex) |
-| Próximo marco | Marco 1 · 12/11/2026 — entidades, relações e consultas JPA prontas |
+| Última aula concluída | Aula 06 · 12/11/2026 (Alex) |
+| Última tag | `v0.1.0` — Fase 1 · Persistência |
+| Fase atual | Fase 2 · API REST (David) |
+| Próximo marco | Marco 2 · 03/12/2026 — CRUD, erros, DTOs e camada de serviço; nenhuma entidade exposta na API |
 
-**Pendências para a próxima aula:** nenhuma.
+**Pendências para a próxima aula (aula 07 · 17/11):**
+
+- O projeto ainda não tem camada web: falta a dependência `spring-boot-starter-web`.
+- A carga de dados e os `System.out` estão na classe principal; vão para `config/CargaInicial`.
+- A Criteria de `TarefaFiltro` filtra só `prioridade` e `usuarioId`; `concluida` entra na aula 12.
 
 ## 🗂️ Fases e versões
 
