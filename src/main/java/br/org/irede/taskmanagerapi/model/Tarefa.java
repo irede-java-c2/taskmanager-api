@@ -1,5 +1,6 @@
 package br.org.irede.taskmanagerapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,37 +21,39 @@ import java.util.Set;
 @Entity
 @Table(name = "tarefas")
 public class Tarefa {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false, length = 100)
     private String titulo;
-    
+
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    
+
     @Column(nullable = false)
     private boolean concluida = false;
-    
+
     private LocalDate prazo;
-    
+
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade = Prioridade.MEDIA;
-    
+
     //receber a chave estrangeira de usuario
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-    
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "tarefa_etiqueta",
-        joinColumns = @JoinColumn(name = "id_tarefa"),
-        inverseJoinColumns = @JoinColumn(name = "id_etiqueta"))
+            joinColumns = @JoinColumn(name = "id_tarefa"),
+            inverseJoinColumns = @JoinColumn(name = "id_etiqueta"))
     private Set<Etiqueta> etiquetas = new HashSet();
-    
-    public Tarefa(){
+
+    public Tarefa() {
     }
 
     public Tarefa(String titulo, String descricao, Prioridade prioridade) {
@@ -58,13 +61,13 @@ public class Tarefa {
         this.descricao = descricao;
         this.prioridade = prioridade;
     }
-    
-    public void adicionarEtiqueta(Etiqueta etiqueta){
+
+    public void adicionarEtiqueta(Etiqueta etiqueta) {
         etiquetas.add(etiqueta);
         etiqueta.getTarefas().add(this);
     }
-    
-    public void removerEtiqueta(Etiqueta etiqueta){
+
+    public void removerEtiqueta(Etiqueta etiqueta) {
         etiquetas.remove(etiqueta);
         etiqueta.getTarefas().remove(this);
     }
@@ -135,9 +138,9 @@ public class Tarefa {
 
     @Override
     public String toString() {
-        return "Tarefa{" + "id=" + id + ", titulo=" + titulo 
-                + ", descricao=" + descricao + ", concluida=" + concluida 
+        return "Tarefa{" + "id=" + id + ", titulo=" + titulo
+                + ", descricao=" + descricao + ", concluida=" + concluida
                 + ", prazo=" + prazo + ", prioridade=" + prioridade + '}';
     }
-    
+
 }
