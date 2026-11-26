@@ -1,5 +1,7 @@
 package br.org.irede.taskmanagerapi.controller;
 
+import br.org.irede.taskmanagerapi.exception.TarefaNaoEncontradaException;
+import br.org.irede.taskmanagerapi.exception.UsuarioNaoEncontradoException;
 import br.org.irede.taskmanagerapi.repository.TarefaRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +39,9 @@ public class TarefaController {
 
     @GetMapping("/{id}")
     public Tarefa buscarPorId(@PathVariable Long id) {
-        return tarefaRepository.findById(id).orElseThrow();
+        return tarefaRepository.findById(id).orElseThrow(
+                () -> new TarefaNaoEncontradaException(id)
+        );
     }
 
     @PostMapping
@@ -45,7 +49,9 @@ public class TarefaController {
             @Valid @RequestBody Tarefa tarefa,
             @RequestParam Long usuarioId
     ) {
-        Usuario dono = usuarioRepository.findById(usuarioId).orElseThrow();
+        Usuario dono = usuarioRepository.findById(usuarioId).orElseThrow(
+                () -> new UsuarioNaoEncontradoException(usuarioId)
+        );
         tarefa.setUsuario(dono);
         Tarefa salva = tarefaRepository.save(tarefa);
         return ResponseEntity.status(HttpStatus.CREATED).body(salva);
@@ -53,7 +59,9 @@ public class TarefaController {
 
     @PutMapping("/{id}")
     public Tarefa atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa dados) {
-        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow();
+        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(
+                () -> new TarefaNaoEncontradaException(id)
+        );
         tarefa.setTitulo(dados.getTitulo());
         tarefa.setDescricao(dados.getDescricao());
         tarefa.setPrioridade(dados.getPrioridade());
@@ -61,9 +69,13 @@ public class TarefaController {
         tarefa.setConcluida(dados.isConcluida());
         return tarefaRepository.save(tarefa);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        if (!tarefaRepository.existsById(id)) {
+            throw new TarefaNaoEncontradaException(id);
+        }
+
         tarefaRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
