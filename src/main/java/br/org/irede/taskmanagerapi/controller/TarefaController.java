@@ -1,5 +1,7 @@
 package br.org.irede.taskmanagerapi.controller;
 
+import br.org.irede.taskmanagerapi.dto.TarefaResponseDTO;
+import br.org.irede.taskmanagerapi.dto.TarefaRequestDTO;
 import br.org.irede.taskmanagerapi.exception.TarefaNaoEncontradaException;
 import br.org.irede.taskmanagerapi.exception.UsuarioNaoEncontradoException;
 import br.org.irede.taskmanagerapi.repository.TarefaRepository;
@@ -23,59 +25,63 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/api/v1/tarefas")
 public class TarefaController {
-
+    
     private final UsuarioRepository usuarioRepository;
     private final TarefaRepository tarefaRepository;
-
+    
     public TarefaController(UsuarioRepository usuarioRepository, TarefaRepository tarefaRepository) {
         this.usuarioRepository = usuarioRepository;
         this.tarefaRepository = tarefaRepository;
     }
-
+    
     @GetMapping
-    public List<Tarefa> listar() {
-        return tarefaRepository.findAll();
+    public List<TarefaResponseDTO> listar() {
+        return tarefaRepository.findAll().stream()
+                .map(TarefaResponseDTO::de).toList();
     }
-
+    
     @GetMapping("/{id}")
-    public Tarefa buscarPorId(@PathVariable Long id) {
-        return tarefaRepository.findById(id).orElseThrow(
+    public TarefaResponseDTO buscarPorId(@PathVariable Long id) {
+        Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(
                 () -> new TarefaNaoEncontradaException(id)
         );
+        
+        return TarefaResponseDTO.de(tarefa);
     }
-
+    
     @PostMapping
-    public ResponseEntity<Tarefa> criar(
-            @Valid @RequestBody Tarefa tarefa,
+    public ResponseEntity<TarefaResponseDTO> criar(
+            @Valid @RequestBody TarefaRequestDTO dados,
             @RequestParam Long usuarioId
     ) {
         Usuario dono = usuarioRepository.findById(usuarioId).orElseThrow(
                 () -> new UsuarioNaoEncontradoException(usuarioId)
         );
+        
+        Tarefa tarefa = new Tarefa();
+        dados.copiarPara(tarefa);
         tarefa.setUsuario(dono);
         Tarefa salva = tarefaRepository.save(tarefa);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salva);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(TarefaResponseDTO.de(salva));
     }
-
+    
     @PutMapping("/{id}")
-    public Tarefa atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa dados) {
+    public TarefaResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody TarefaRequestDTO dados) {
         Tarefa tarefa = tarefaRepository.findById(id).orElseThrow(
                 () -> new TarefaNaoEncontradaException(id)
         );
-        tarefa.setTitulo(dados.getTitulo());
-        tarefa.setDescricao(dados.getDescricao());
-        tarefa.setPrioridade(dados.getPrioridade());
-        tarefa.setPrazo(dados.getPrazo());
-        tarefa.setConcluida(dados.isConcluida());
-        return tarefaRepository.save(tarefa);
+        dados.copiarPara(tarefa);
+        
+        return TarefaResponseDTO.de(tarefaRepository.save(tarefa));
     }
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         if (!tarefaRepository.existsById(id)) {
             throw new TarefaNaoEncontradaException(id);
         }
-
+        
         tarefaRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
